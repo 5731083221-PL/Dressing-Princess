@@ -1,72 +1,101 @@
 package scene;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
+import java.awt.event.*;
 import javax.swing.*;
 
-import gameManager.AudioUtility;
-import gameManager.Setting;
+import manager.GameManager;
+import manager.Setting;
+import sun.tools.jar.resources.jar;
 
 public class GameTitle extends JPanel {
-	private JPanel center, north, beauty0, beauty1, beauty2;
-	private JButton start;
-	private JCheckBox isPlaySound;
+	private static final long serialVersionUID = 1L;
 	private JTextField playerName;
-	private JLabel title = new JLabel("Dressing Princess", SwingConstants.CENTER);
-	private GridLayout g = new GridLayout(3, 1);
+	private JCheckBox playSound;
+	private JButton startButton;
+	private JPanel centerPanel, adjustingPanel[];
 
 	public GameTitle() {
 		this.setLayout(new BorderLayout());
 		this.setPreferredSize(new Dimension(Setting.screenWidth, Setting.screenHeight));
-		start = new JButton("Start");
-		start.setFont(Setting.bigFont);
-		title.setFont(Setting.bigFont);
-		title.setPreferredSize(new Dimension(Setting.screenWidth, Setting.screenHeight / 4));
-		north = new JPanel();
-		north.setLayout(new BorderLayout());
-		north.add(title, BorderLayout.CENTER);
-		playerName = new JTextField();
-		playerName.setFont(Setting.inputFont);
-		playerName.setText("Enter your name here");
-		playerName.setHorizontalAlignment(JTextField.CENTER);
-		isPlaySound = new JCheckBox("Play Sound");
-		isPlaySound.setSelected(true);
-		isPlaySound.setFont(Setting.storyFont);
-		center = new JPanel();
-		g.setVgap(50);
-		center.setLayout(g);
-		center.setPreferredSize(new Dimension(Setting.screenWidth/2, Setting.screenHeight/2));
-		center.add(playerName);
-		center.add(start);
-		center.add(isPlaySound);
-		this.add(title, BorderLayout.NORTH);
-		this.add(center, BorderLayout.CENTER);
-		beauty0 = new JPanel();
-		beauty0.setPreferredSize(new Dimension(Setting.screenWidth, Setting.screenHeight/4));
-		this.add(beauty0, BorderLayout.SOUTH);
-		beauty1 = new JPanel();
-		beauty1.setPreferredSize(new Dimension(256, 384));
-		this.add(beauty1, BorderLayout.WEST);
-		beauty2 = new JPanel();
-		beauty2.setPreferredSize(new Dimension(256, 384));
-		this.add(beauty2, BorderLayout.EAST);
-		AudioUtility.playSound("bgm");
-		isPlaySound.addActionListener(new ActionListener() {
+		playerName = new JTextField("Enter your name here");
+		playerName.setFont(Setting.standardFont);
+		playerName.setHorizontalAlignment(SwingConstants.CENTER);
+		startButton = new JButton("Start");
+		startButton.setFont(Setting.bigFont);
+		playSound = new JCheckBox("Play Sound", true);
+		playSound.setFont(Setting.standardFont);
+		playerName.addMouseListener(new MouseListener() {
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+
+			}
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (playerName.getText().equalsIgnoreCase("Enter your name here")) {
+					playerName.setText("");
+				}
+
+			}
+		});
+		playSound.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (playSound.isSelected()) {
+					Setting.isPlaySound = true;
+				} else {
+					Setting.isPlaySound = false;
+				}
+
+			}
+		});
+		centerPanel = new JPanel();
+		centerPanel.setLayout(new GridLayout(3, 1));
+		((GridLayout) centerPanel.getLayout()).setVgap(50);
+		centerPanel.add(playerName);
+		centerPanel.add(startButton);
+		centerPanel.add(playSound);
+		adjustingPanel = new JPanel[4];
+		for (int i = 0; i < 4; i++) {
+			adjustingPanel[i] = new JPanel();
+		}
+		adjustingPanel[0].setPreferredSize(new Dimension(Setting.screenWidth, Setting.screenHeight / 4));
+		adjustingPanel[1].setPreferredSize(new Dimension(Setting.screenWidth / 4, Setting.screenHeight / 2));
+		adjustingPanel[2].setPreferredSize(new Dimension(Setting.screenWidth / 4, Setting.screenHeight / 2));
+		adjustingPanel[3].setPreferredSize(new Dimension(Setting.screenWidth, Setting.screenHeight / 4));
+		this.add(adjustingPanel[0], BorderLayout.NORTH);
+		this.add(centerPanel, BorderLayout.CENTER);
+		this.add(adjustingPanel[1], BorderLayout.WEST);
+		this.add(adjustingPanel[2], BorderLayout.EAST);
+		this.add(adjustingPanel[3], BorderLayout.SOUTH);
+		startButton.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(isPlaySound.isSelected()){
-					Setting.setPlaySound(true);
-					AudioUtility.playSound("bgm");
-				}
-				else{
-					Setting.setPlaySound(false);
-					AudioUtility.stopSound();
-				}
+				GameManager.newGame();
 				
 			}
 		});
 	}
+	
 }
