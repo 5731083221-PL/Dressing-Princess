@@ -1,30 +1,28 @@
 package player;
 
 public class Player {
-	private String name;
-	private int score;
+	private static String name;
+	private static int score = 0;
 
-	public Player(String name) {
-		this.name = name;
-		this.score = 0;
+	public static int getScore() {
+		return score;
 	}
 
-	public int getScore() {
-		return this.score;
+	public static void addScore(int score) {
+		Player.score += score;
 	}
 
-	public void addScore(int score) {
-		this.score += score;
-	}
-
-	public boolean subtractScore(int score) {
-		if (this.score - score < 0)
+	public static boolean subtractScore(int score) {
+		if (Player.score - score < 0)
 			return false;
-		this.score -= score;
+		Player.score -= score;
 		return true;
 
 	}
-	public String getPlayerName(){
-		return this.name;
+	public static String getPlayerName(){
+		return name;
+	}
+	public static void setPlayerName(String name){
+		Player.name = name;
 	}
 }

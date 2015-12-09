@@ -6,7 +6,7 @@ import javax.swing.*;
 
 import manager.GameManager;
 import manager.Setting;
-import sun.tools.jar.resources.jar;
+import player.Player;
 
 public class GameTitle extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -92,8 +92,12 @@ public class GameTitle extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				GameManager.newGame();
-				
+				if(playerName.getText().equals("")||playerName.getText().equalsIgnoreCase("Enter your name here")){
+					JOptionPane.showMessageDialog(MainWindow.mainWindow, "Please enter your name", "Invalid name", JOptionPane.ERROR_MESSAGE);
+				}else{
+					Player.setPlayerName(playerName.getText());
+					GameManager.newGame();
+				}
 			}
 		});
 	}
