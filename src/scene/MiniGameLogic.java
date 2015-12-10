@@ -58,7 +58,6 @@ public class MiniGameLogic {
 		} else if (op3.equals("-")) {
 			ans -= d;
 		}
-		System.out.println("ans from is "+ans);
 		if (ans == answer) {
 			return true;
 		}

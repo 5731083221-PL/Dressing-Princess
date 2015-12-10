@@ -20,6 +20,7 @@ public class PlayWindow extends JPanel {
 	private String scoreStatus, timeStatus;
 	private int timeleft, thisScore;
 	private boolean result;
+	private static final int MAXTIME = 60;
 
 	public PlayWindow(String mode) {
 		this.setLayout(new BorderLayout());
@@ -37,8 +38,7 @@ public class PlayWindow extends JPanel {
 		scoreStatus = "     Score : " + thisScore;
 		scorebar = new JLabel(scoreStatus);
 		scorebar.setFont(Setting.standardFont);
-		//set Time here
-		timeleft = 10;
+		timeleft = MAXTIME;
 		timeStatus = "Time Left : " + timeleft;
 		timebar = new JLabel(timeStatus);
 		timebar.setFont(Setting.standardFont);
@@ -107,8 +107,6 @@ public class PlayWindow extends JPanel {
 				try {
 					int sentAnswer = Integer.parseInt(answerArea.getText());
 					result = logic.checkAnswer(sentAnswer);
-					System.out.println("ans is "+sentAnswer);
-					System.out.println(result);
 				} catch (NumberFormatException ex) {
 					ex.printStackTrace();
 					JOptionPane.showMessageDialog(MainWindow.mainWindow, "Answer must be integer", "Error",
@@ -122,7 +120,6 @@ public class PlayWindow extends JPanel {
 					south.repaint();
 					MainWindow.mainWindow.revalidate();
 					MainWindow.mainWindow.repaint();
-					System.out.println("Ans true");
 				}
 				logic.resetParameter();
 				question.setText(logic.getEquation());

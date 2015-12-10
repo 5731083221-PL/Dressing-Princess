@@ -9,7 +9,7 @@ public class MainWindow{
 		mainWindow = new JFrame("Dressing Princess");
 		GameTitle gameTitle = new GameTitle();
 		showObject.add(gameTitle);
-		mainWindow.add(showObject);
+		mainWindow.add(showObject);		
 		mainWindow.setResizable(false);
 		mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mainWindow.pack();
@@ -21,4 +21,5 @@ public class MainWindow{
 		mainWindow.revalidate();
 		mainWindow.repaint();
 	}
+	
 }

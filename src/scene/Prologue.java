@@ -23,9 +23,8 @@ public class Prologue extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				i++;
-				l.setText("hello"+i);
-				if(i==10){
+				
+				if(i==3){
 					((Timer)e.getSource()).stop();
 					GameManager.runGame();
 				}
@@ -33,6 +32,10 @@ public class Prologue extends JPanel {
 			}
 		});
 		t.start();
+		
+	}
+	@Override
+	public void paintComponent(Graphics g){
 		
 	}
 }

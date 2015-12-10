@@ -18,7 +18,7 @@ public class Resource {
 	private static AudioClip wrong;
 	private static AudioClip click;
 	private static ClassLoader cl = Resource.class.getClassLoader();
-	static{
+	/*static{
 		try {
 			bgm = Applet.newAudioClip((cl.getResource("bgm.wav")).toURI().toURL());
 			correct = Applet.newAudioClip((cl.getResource("correrct.wav")).toURI().toURL());
@@ -28,7 +28,7 @@ public class Resource {
 			e.printStackTrace();
 		}
 
-	}
+	}*/
 	public static BufferedImage getBackgroundImage(String directory){
 		try{
 			bg = ImageIO.read(cl.getResource(directory));
