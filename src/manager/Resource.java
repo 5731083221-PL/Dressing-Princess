@@ -12,7 +12,6 @@ import java.applet.*;
 
 public class Resource {
 	private static BufferedImage bg;
-	private static BufferedImage dress;
 	private static AudioClip bgm;
 	private static AudioClip correct;
 	private static AudioClip wrong;
@@ -40,7 +39,7 @@ public class Resource {
 	}
 	public static void playAudio(String name){
 		if(name.equals("bgm")){
-			bgm.play();
+			bgm.loop();
 		}
 		else if(name.equals("correct")){
 			correct.play();

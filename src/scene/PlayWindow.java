@@ -34,11 +34,7 @@ public class PlayWindow extends JPanel {
 		answerButton = Resource.getBackgroundImage("img/Answer Button.png");
 		logic = new MiniGameLogic(mode);
 		question = logic.getEquation();
-		answer = new JButton();
-		answer.setIcon(new ImageIcon(answerButton));
-		answer.setOpaque(false);
-		answer.setContentAreaFilled(false);
-		answer.setBorderPainted(false);
+		answer = GameManager.createButton(answerButton);
 		answer.setBounds((Setting.screenWidth-answerButton.getWidth())/2, 500, answerButton.getWidth(), answerButton.getHeight());
 		this.add(answer);
 		thisScore = 0;
@@ -96,7 +92,7 @@ public class PlayWindow extends JPanel {
 		Timer t1 = new Timer(1000, new ActionListener() {
 
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public synchronized void actionPerformed(ActionEvent e) {
 				timeleft--;
 				timeStatus = "Time Left : " + timeleft;
 				MainWindow.mainWindow.revalidate();
@@ -129,14 +125,19 @@ public class PlayWindow extends JPanel {
 				if (result) {
 					thisScore += logic.rewardScore();
 					scoreStatus = "Score : " + thisScore;
-					MainWindow.mainWindow.revalidate();
-					MainWindow.mainWindow.repaint();
+					synchronized (this) {
+						MainWindow.mainWindow.revalidate();
+						MainWindow.mainWindow.repaint();
+					}	
 				}
 				logic.resetParameter();
 				question = logic.getEquation();
 				answerArea.setText("Answer here");
-				MainWindow.mainWindow.revalidate();
-				MainWindow.mainWindow.repaint();
+				synchronized (this) {
+					MainWindow.mainWindow.revalidate();
+					MainWindow.mainWindow.repaint();
+				}
+				
 			}
 		});
 

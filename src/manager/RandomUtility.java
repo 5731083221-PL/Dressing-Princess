@@ -18,4 +18,7 @@ public class RandomUtility {
 		default : return "+";
 		}
 	}
+	public static int levelRandom(int level){
+		return 1 + (int)(Math.random() * ((level - 1) + 1));
+	}
 }

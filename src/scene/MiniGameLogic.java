@@ -21,23 +21,110 @@ public class MiniGameLogic {
 	public String getEquation() {
 		op1 = RandomUtility.OpRandom();
 		if (mode.equalsIgnoreCase("easy")) {
-			a = RandomUtility.EasyRandom();
-			b = RandomUtility.EasyRandom();
-			return a +" "+ op1 +" "+ b;
+			int styleRandom = RandomUtility.levelRandom(4);
+			switch (styleRandom) {
+			case 1:
+				b = RandomUtility.EasyRandom();
+				a = RandomUtility.EasyRandom();
+				break;
+			case 2:
+				b = RandomUtility.MediumRandom();
+				a = RandomUtility.EasyRandom();
+				break;
+			case 3:
+				b = RandomUtility.EasyRandom();
+				a = RandomUtility.MediumRandom();
+				break;
+			case 4:
+				b = RandomUtility.MediumRandom();
+				a = RandomUtility.MediumRandom();
+				break;
+			default:
+				b = RandomUtility.EasyRandom();
+				a = RandomUtility.EasyRandom();
+				break;
+			}
+			return a + " " + op1 + " " + b;
 		} else if (mode.equalsIgnoreCase("medium")) {
 			op2 = RandomUtility.OpRandom();
 			a = RandomUtility.MediumRandom();
-			b = RandomUtility.EasyRandom();
-			c = RandomUtility.EasyRandom();
-			return a +" "+ op1 +" "+ b +" "+ op2 +" "+ c;
+			int styleRandom = RandomUtility.levelRandom(4);
+			switch (styleRandom) {
+			case 1:
+				b = RandomUtility.EasyRandom();
+				c = RandomUtility.EasyRandom();
+				break;
+			case 2:
+				b = RandomUtility.MediumRandom();
+				c = RandomUtility.EasyRandom();
+				break;
+			case 3:
+				b = RandomUtility.EasyRandom();
+				c = RandomUtility.MediumRandom();
+				break;
+			case 4:
+				b = RandomUtility.MediumRandom();
+				c = RandomUtility.MediumRandom();
+				break;
+			default:
+				b = RandomUtility.EasyRandom();
+				c = RandomUtility.EasyRandom();
+				break;
+			}
+			return a + " " + op1 + " " + b + " " + op2 + " " + c;
 		} else {
 			op2 = RandomUtility.OpRandom();
 			op3 = RandomUtility.OpRandom();
 			a = RandomUtility.HardRandom();
-			b = RandomUtility.MediumRandom();
-			c = RandomUtility.EasyRandom();
-			d = RandomUtility.MediumRandom();
-			return a +" "+ op1+" " + b +" "+ op2 +" "+ c +" "+ op3 +" "+ d;
+			int styleRandom = RandomUtility.levelRandom(8);
+			switch (styleRandom) {
+			case 1:
+				b = RandomUtility.MediumRandom();
+				c = RandomUtility.EasyRandom();
+				d = RandomUtility.MediumRandom();
+				break;
+			case 2:
+				b = RandomUtility.EasyRandom();
+				c = RandomUtility.EasyRandom();
+				d = RandomUtility.MediumRandom();
+				break;
+			case 3:
+				b = RandomUtility.EasyRandom();
+				c = RandomUtility.HardRandom();
+				d = RandomUtility.MediumRandom();
+				break;
+			case 4:
+				b = RandomUtility.MediumRandom();
+				c = RandomUtility.MediumRandom();
+				d = RandomUtility.MediumRandom();
+				break;
+			case 5:
+				b = RandomUtility.EasyRandom();
+				c = RandomUtility.HardRandom();
+				d = RandomUtility.HardRandom();
+				break;
+			case 6:
+				b = RandomUtility.EasyRandom();
+				c = RandomUtility.EasyRandom();
+				d = RandomUtility.EasyRandom();
+				break;
+			case 7:
+				b = RandomUtility.HardRandom();
+				c = RandomUtility.EasyRandom();
+				d = RandomUtility.MediumRandom();
+				break;
+			case 8:
+				b = RandomUtility.HardRandom();
+				c = RandomUtility.HardRandom();
+				d = RandomUtility.HardRandom();
+				break;
+			default:
+				b = RandomUtility.EasyRandom();
+				c = RandomUtility.EasyRandom();
+				d = RandomUtility.EasyRandom();
+				break;
+			}
+			return a + " " + op1 + " " + b + " " + op2 + " " + c + " " + op3 + " " + d;
 		}
 	}
 
@@ -74,11 +161,12 @@ public class MiniGameLogic {
 		d = 0;
 		ans = 0;
 	}
-	public int rewardScore(){
+
+	public int rewardScore() {
 		if (mode.equalsIgnoreCase("Hard")) {
-			return 100;
+			return 80;
 		} else if (mode.equalsIgnoreCase("medium")) {
-			return 50;
+			return 40;
 		} else {
 			return 10;
 		}

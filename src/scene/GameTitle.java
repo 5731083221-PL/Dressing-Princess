@@ -32,8 +32,8 @@ public class GameTitle extends JPanel {
 		};
 		playerName.setFont(Setting.standardFont);
 		playerName.setHorizontalAlignment(SwingConstants.CENTER);
-		startButton = new JButton();
 		button = Resource.getBackgroundImage("img/Start Button.png");
+		startButton = GameManager.createButton(button);
 		startButton.setIcon(new ImageIcon(button));
 		playSound = new JCheckBox("Play Sound", true);
 		playSound.setFont(Setting.standardFont);
@@ -88,9 +88,6 @@ public class GameTitle extends JPanel {
 		playerName.setOpaque(false);
 		this.add(startButton);
 		startButton.setBounds(405, 620, button.getWidth(), button.getHeight());
-		startButton.setOpaque(false);
-		startButton.setContentAreaFilled(false);
-		startButton.setBorderPainted(false);
 		this.add(playSound);
 		playSound.setBounds(10, 720, 130, 30);
 		playSound.setOpaque(false);

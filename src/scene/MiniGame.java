@@ -27,27 +27,18 @@ public class MiniGame extends JPanel {
 		modeButton[2] = Resource.getBackgroundImage("img/Hard Button.png");
 		bg = Resource.getBackgroundImage("img/Background.png");
 		backButton = Resource.getBackgroundImage("img/Back.png");
-		back = new JButton();
-		back.setIcon(new ImageIcon(backButton));
-		back.setOpaque(false);
-		back.setBorderPainted(false);
-		back.setContentAreaFilled(false);
+		back = GameManager.createButton(backButton);
 		back.setBounds(10, 650, backButton.getWidth(), backButton.getHeight());
 		this.add(back);
 		mode = new JButton[3];
-		mode[0] = new JButton();
-		mode[1] = new JButton();
-		mode[2] = new JButton();
+		for(int i=0;i<3;i++){
+			mode[i] = GameManager.createButton(modeButton[i]);
+			this.add(mode[i]);
+		}
 		mode[0].setBounds(273, 100, modeButton[0].getWidth(), modeButton[0].getHeight());
 		mode[1].setBounds(273, 323, modeButton[1].getWidth(), modeButton[1].getHeight());
 		mode[2].setBounds(273, 546, modeButton[2].getWidth(), modeButton[2].getHeight());
-		for(int i=0;i<3;i++){
-			mode[i].setIcon(new ImageIcon(modeButton[i]));
-			mode[i].setOpaque(false);
-			mode[i].setContentAreaFilled(false);
-			mode[i].setBorderPainted(false);
-			this.add(mode[i]);
-		}
+		
 		
 		mode[0].addActionListener(new ActionListener() {
 

@@ -11,14 +11,7 @@ public class Player {
 	public static void addScore(int score) {
 		Player.score += score;
 	}
-
-	public static boolean subtractScore(int score) {
-		if (Player.score - score < 0)
-			return false;
-		Player.score -= score;
-		return true;
-
-	}
+	
 	public static String getPlayerName(){
 		return name;
 	}
