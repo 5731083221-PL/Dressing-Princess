@@ -23,13 +23,13 @@ public class MiniGameLogic {
 		if (mode.equalsIgnoreCase("easy")) {
 			a = RandomUtility.EasyRandom();
 			b = RandomUtility.EasyRandom();
-			return a + op1 + b;
+			return a +" "+ op1 +" "+ b;
 		} else if (mode.equalsIgnoreCase("medium")) {
 			op2 = RandomUtility.OpRandom();
 			a = RandomUtility.MediumRandom();
 			b = RandomUtility.EasyRandom();
 			c = RandomUtility.EasyRandom();
-			return a + op1 + b + op2 + c;
+			return a +" "+ op1 +" "+ b +" "+ op2 +" "+ c;
 		} else {
 			op2 = RandomUtility.OpRandom();
 			op3 = RandomUtility.OpRandom();
@@ -37,7 +37,7 @@ public class MiniGameLogic {
 			b = RandomUtility.MediumRandom();
 			c = RandomUtility.EasyRandom();
 			d = RandomUtility.MediumRandom();
-			return a + op1 + b + op2 + c + op3 + d;
+			return a +" "+ op1+" " + b +" "+ op2 +" "+ c +" "+ op3 +" "+ d;
 		}
 	}
 

@@ -3,78 +3,93 @@ package scene;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 
 import manager.GameManager;
+import manager.Resource;
 import manager.Setting;
 import player.Player;
 
 public class PlayWindow extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private MiniGameLogic logic;
-	private JLabel question, banner, scorebar, timebar;
 	private JButton answer;
 	private JTextField answerArea;
-	private JPanel north, center, south, screenAdjust[];
-	private String scoreStatus, timeStatus;
+	private String scoreStatus, timeStatus,question;
 	private int timeleft, thisScore;
 	private boolean result;
 	private static final int MAXTIME = 60;
+	private BufferedImage bg,answerButton;
 
 	public PlayWindow(String mode) {
-		this.setLayout(new BorderLayout());
+		this.setLayout(null);
 		this.setPreferredSize(new Dimension(Setting.screenWidth, Setting.screenHeight));
+		bg = Resource.getBackgroundImage("img/Background.png");
+		answerButton = Resource.getBackgroundImage("img/Answer Button.png");
 		logic = new MiniGameLogic(mode);
-		banner = new JLabel("Answer The Question", SwingConstants.CENTER);
-		banner.setFont(Setting.bigFont);
-		question = new JLabel();
-		question.setFont(Setting.bigFont);
-		question.setHorizontalAlignment(SwingConstants.CENTER);
-		answer = new JButton("Answer");
-		answer.setFont(Setting.standardFont);
-		answer.setPreferredSize(new Dimension(100, 50));
+		question = logic.getEquation();
+		answer = new JButton();
+		answer.setIcon(new ImageIcon(answerButton));
+		answer.setOpaque(false);
+		answer.setContentAreaFilled(false);
+		answer.setBorderPainted(false);
+		answer.setBounds((Setting.screenWidth-answerButton.getWidth())/2, 500, answerButton.getWidth(), answerButton.getHeight());
+		this.add(answer);
 		thisScore = 0;
-		scoreStatus = "     Score : " + thisScore;
-		scorebar = new JLabel(scoreStatus);
-		scorebar.setFont(Setting.standardFont);
+		scoreStatus = "     Score : " + thisScore;	
 		timeleft = MAXTIME;
 		timeStatus = "Time Left : " + timeleft;
-		timebar = new JLabel(timeStatus);
-		timebar.setFont(Setting.standardFont);
-		answerArea = new JTextField();
+		answerArea = new JTextField(){
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void setBorder(Border border) {
+
+			}
+		};
 		answerArea.setFont(Setting.standardFont);
 		answerArea.setHorizontalAlignment(SwingConstants.CENTER);
-		north = new JPanel();
-		north.setPreferredSize(new Dimension(Setting.screenWidth, Setting.screenHeight / 8));
-		north.add(banner);
-		center = new JPanel();
-		center.setLayout(new GridLayout(2, 1));
-		((GridLayout) center.getLayout()).setHgap(200);
-		((GridLayout) center.getLayout()).setVgap(100);
-		center.setPreferredSize(new Dimension(Setting.screenWidth * 6 / 8, Setting.screenHeight * 6 / 8 - 128));
-		center.add(question);
-		center.add(answerArea);
-		screenAdjust = new JPanel[2];
-		screenAdjust[0] = new JPanel();
-		screenAdjust[1] = new JPanel();
-		screenAdjust[0].setPreferredSize(new Dimension(Setting.screenWidth / 8, Setting.screenHeight * 6 / 8 - 128));
-		screenAdjust[1].setPreferredSize(new Dimension(Setting.screenWidth / 8, Setting.screenHeight * 6 / 8 - 128));
-		south = new JPanel();
-		south.setPreferredSize(new Dimension(Setting.screenWidth, Setting.screenHeight / 8 + 128));
-		south.setLayout(new GridBagLayout());
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.fill = GridBagConstraints.BOTH;
-		gbc.weightx = 5.0;
-		south.add(scorebar, gbc);
-		south.add(timebar, gbc);
-		gbc.weightx = 1.0;
-		south.add(answer, gbc);
-		this.add(north, BorderLayout.NORTH);
-		this.add(center, BorderLayout.CENTER);
-		this.add(screenAdjust[0], BorderLayout.WEST);
-		this.add(screenAdjust[1], BorderLayout.EAST);
-		this.add(south, BorderLayout.SOUTH);
+		answerArea.setBounds(312, 350, 400, 80);
+		answerArea.setText("Answer here");
+		this.add(answerArea);
+		answerArea.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				answerArea.setText("");
+				
+			}
+		});
 	}
 
 	public void gameStart() {
@@ -84,8 +99,6 @@ public class PlayWindow extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				timeleft--;
 				timeStatus = "Time Left : " + timeleft;
-				timebar.setText(timeStatus);
-				south.repaint();
 				MainWindow.mainWindow.revalidate();
 				MainWindow.mainWindow.repaint();
 				if (timeleft == 0) {
@@ -97,7 +110,7 @@ public class PlayWindow extends JPanel {
 			}
 		});
 		t1.start();
-		question.setText(logic.getEquation());
+		question = logic.getEquation();
 		answer.requestFocus();
 		answer.addActionListener(new ActionListener() {
 
@@ -115,20 +128,48 @@ public class PlayWindow extends JPanel {
 				}
 				if (result) {
 					thisScore += logic.rewardScore();
-					scoreStatus = "     Score : " + thisScore;
-					scorebar.setText(scoreStatus);
-					south.repaint();
+					scoreStatus = "Score : " + thisScore;
 					MainWindow.mainWindow.revalidate();
 					MainWindow.mainWindow.repaint();
 				}
 				logic.resetParameter();
-				question.setText(logic.getEquation());
-				answerArea.setText("");
-				center.repaint();
+				question = logic.getEquation();
+				answerArea.setText("Answer here");
 				MainWindow.mainWindow.revalidate();
 				MainWindow.mainWindow.repaint();
 			}
 		});
 
+	}
+	@Override
+	public void paintComponent(Graphics g){
+		super.paintComponent(g);
+		g.drawImage(bg, 0, 0, null);
+		//draw banner
+		FontMetrics metrics = g.getFontMetrics(Setting.bigFont);
+		Rectangle2D rect = metrics.getStringBounds("Answer The Question", g);
+		int x = (Setting.screenWidth - (int) rect.getWidth()) / 2;
+		int y = 60;
+		g.setFont(Setting.bigFont);
+		g.drawString("Answer The Question", x,y );
+		//draw question
+		metrics = g.getFontMetrics(Setting.slimBigFont);
+		rect = metrics.getStringBounds(question, g);
+		x = (Setting.screenWidth - (int) rect.getWidth()) / 2;
+		y = 200;
+		g.setColor(Color.WHITE);
+		g.fillRect(312, 150, 400, 80);
+		g.setFont(Setting.slimBigFont);
+		g.setColor(Color.BLACK);
+		g.drawString(question, x,y );
+		//draw score bar
+		x = 20;
+		y = 740;
+		g.drawString(scoreStatus, x,y );
+		//draw time bar
+		rect = metrics.getStringBounds(timeStatus, g);
+		x = (Setting.screenWidth - (int) rect.getWidth()) / 2;
+		y = 740;
+		g.drawString(timeStatus, x,y );
 	}
 }

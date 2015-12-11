@@ -17,24 +17,28 @@ public class MainMap extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private JButton shop, game;
 	private String playerStatus;
-	private BufferedImage bg;
+	private BufferedImage bg,playButton,shopButton;
 	
 	public MainMap() {
 		this.setPreferredSize(new Dimension(Setting.screenWidth, Setting.screenHeight));
 		this.setLayout(null);
 		bg = Resource.getBackgroundImage("img/Background.png");
-		game = new JButton("play");
+		playButton = Resource.getBackgroundImage("img/Play Button.png");
+		shopButton = Resource.getBackgroundImage("img/Shop Button.png");
+		game = new JButton();
+		game.setIcon(new ImageIcon(playButton));
 		game.setFont(Setting.bigFont);
 		game.setOpaque(false);
 		game.setContentAreaFilled(false);
 		game.setBorderPainted(false);
-		game.setBounds(300,300 , 300, 300);
-		shop = new JButton("Shop");
+		game.setBounds(229,103 , playButton.getWidth(), playButton.getHeight());
+		shop = new JButton();
+		shop.setIcon(new ImageIcon(shopButton));
 		shop.setFont(Setting.bigFont);
 		shop.setOpaque(false);
 		shop.setContentAreaFilled(false);
 		shop.setBorderPainted(false);
-		shop.setBounds(700,300 , 300, 300);
+		shop.setBounds(512,103 , shopButton.getWidth(), shopButton.getHeight());
 		playerStatus = "Hello "+Player.getPlayerName()+", Your score is "+Player.getScore();
 		this.add(game);
 		this.add(shop);
@@ -54,7 +58,7 @@ public class MainMap extends JPanel {
 		FontMetrics metrics = g.getFontMetrics(Setting.slimBigFont);
 		Rectangle2D rect = metrics.getStringBounds(playerStatus, g);
 		int x = (Setting.screenWidth - (int) rect.getWidth()) / 2;
-		int y = 80;
+		int y = 60;
 		super.paintComponent(g);
 		g.drawImage(bg, 0, 0, null);
 		g.setFont(Setting.slimBigFont);
