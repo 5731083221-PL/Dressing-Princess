@@ -1,5 +1,6 @@
 package scene;
 
+import java.applet.AudioClip;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
@@ -18,6 +19,7 @@ public class GameTitle extends JPanel {
 	private JCheckBox playSound;
 	private JButton startButton;
 	private BufferedImage bg, button;
+	private AudioClip bgm;
 
 	public GameTitle() {
 		this.setLayout(null);
@@ -38,46 +40,19 @@ public class GameTitle extends JPanel {
 		playSound = new JCheckBox("Play Sound", true);
 		playSound.setFont(Setting.standardFont);
 		bg = Resource.getBackgroundImage("img/GameTitle.png");
-		playerName.addMouseListener(new MouseListener() {
-
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-
-			}
-
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if (playerName.getText().equalsIgnoreCase("Enter your name here")) {
-					playerName.setText("");
-				}
-
-			}
-		});
+		bgm = Resource.getAudio("sound/bgm2.wav");
+		bgm.play();
 		playSound.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (playSound.isSelected()) {
 					Setting.isPlaySound = true;
+					bgm.play();
+					
 				} else {
 					Setting.isPlaySound = false;
+					bgm.stop();
 				}
 
 			}
@@ -95,11 +70,27 @@ public class GameTitle extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (playerName.getText().equals("") || playerName.getText().equalsIgnoreCase("Enter your name here")) {
+				
+				startButton.setIcon(new ImageIcon(Resource.getBackgroundImage("img/Start Button (pressed).png")));
+				if (playerName.getText().equals("")) {
+					if(Setting.isPlaySound){
+						Resource.getAudio("sound/wrong.wav").play();
+					}
 					JOptionPane.showMessageDialog(MainWindow.mainWindow, "Please enter your name", "Invalid name",
 							JOptionPane.ERROR_MESSAGE);
+					startButton.setIcon(new ImageIcon(button));
 				} else {
+					if(Setting.isPlaySound){
+						bgm.stop();
+						Resource.getAudio("sound/click.wav").play();
+					}
 					Player.setPlayerName(playerName.getText());
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 					GameManager.newGame();
 				}
 			}

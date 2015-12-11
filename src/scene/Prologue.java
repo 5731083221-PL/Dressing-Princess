@@ -15,7 +15,7 @@ public class Prologue extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private JLabel pageRun;
 	private BufferedImage page[];
-	int i = 1;
+	private int i = 1;
 
 	public Prologue() {
 		this.setPreferredSize(new Dimension(Setting.screenWidth, Setting.screenHeight));
@@ -27,11 +27,14 @@ public class Prologue extends JPanel {
 		page[3] = Resource.getBackgroundImage("img/page3.png");
 		pageRun = new JLabel(new ImageIcon(page[0]));
 		this.add(pageRun, BorderLayout.NORTH);
+		if (Setting.isPlaySound) {
+			Resource.playMainBGM();
+		}
 	}
 
 	public void playPrologue() {
 		synchronized (this) {
-			Timer t = new Timer(1000, new ActionListener() {
+			Timer t = new Timer(2500, new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					if (i < 4)
@@ -39,6 +42,7 @@ public class Prologue extends JPanel {
 					i++;
 					if (i == 5) {
 						((Timer) e.getSource()).stop();
+
 						GameManager.runGame();
 					}
 

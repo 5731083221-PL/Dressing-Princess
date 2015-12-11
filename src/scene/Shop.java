@@ -34,9 +34,15 @@ public class Shop extends JPanel{
 			public void actionPerformed(ActionEvent e) {
 				buy.setIcon(new ImageIcon(afterpress));
 				if(Player.getScore()<400){
+					if(Setting.isPlaySound){
+						Resource.getAudio("sound/wrong.wav").play();
+					}
 					JOptionPane.showMessageDialog(MainWindow.mainWindow, "You need more score to buy it", "Cannot Buy", JOptionPane.INFORMATION_MESSAGE);
 					buy.setIcon(new ImageIcon(buyButton));
 				}else{
+					if(Setting.isPlaySound){
+						Resource.stopMainBGM();
+					}
 					JOptionPane.showMessageDialog(MainWindow.mainWindow, "Let Go Married", "Congraturation", JOptionPane.INFORMATION_MESSAGE);
 					GameManager.endGame();
 				}
@@ -47,6 +53,12 @@ public class Shop extends JPanel{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				GameManager.runGame();			
 			}
 		});

@@ -29,10 +29,23 @@ public class GameOver extends JPanel {
 		ok = GameManager.createButton(okButton);
 		ok.setBounds((Setting.screenWidth - okButton.getWidth()) / 2, 400, okButton.getWidth(), okButton.getHeight());
 		this.add(ok);
+		if(Setting.isPlaySound){
+			Resource.playMainBGM();
+		}
 		ok.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				if(Setting.isPlaySound){
+					Resource.getAudio("sound/click.png").play();
+				}
+				ok.setIcon(new ImageIcon(Resource.getBackgroundImage("img/OK Button (pressed).png")));
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				GameManager.runGame();
 
 			}

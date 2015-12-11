@@ -1,5 +1,6 @@
 package scene;
 
+import java.applet.AudioClip;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,7 +15,8 @@ public class Epilogue extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private BufferedImage page[];
 	private JLabel pageRun;
-	int i = 1;
+	private int i = 1;
+	private AudioClip bgm;
 
 	public Epilogue() {
 		this.setPreferredSize(new Dimension(Setting.screenWidth, Setting.screenHeight));
@@ -24,6 +26,10 @@ public class Epilogue extends JPanel {
 		page[1] = Resource.getBackgroundImage("img/End2.png");
 		pageRun = new JLabel(new ImageIcon(page[0]));
 		this.add(pageRun, BorderLayout.NORTH);
+		if(Setting.isPlaySound){
+			bgm = Resource.getAudio("sound/Wedding theme.wav");
+			bgm.play();
+		}
 	}
 
 	public void playEpilogue() {
@@ -36,6 +42,7 @@ public class Epilogue extends JPanel {
 					i++;
 					if (i == 3) {
 						((Timer) e.getSource()).stop();
+						Resource.getAudio("sound/applause.wav").play();
 						JOptionPane.showMessageDialog(MainWindow.mainWindow,
 								"Congraturations !\nClick OK button to exit", "Ending", JOptionPane.CLOSED_OPTION);
 						System.exit(0);

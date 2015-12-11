@@ -1,8 +1,11 @@
 package scene;
 
+import java.applet.AudioClip;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.geom.Rectangle2D;
@@ -21,11 +24,12 @@ public class PlayWindow extends JPanel {
 	private MiniGameLogic logic;
 	private JButton answer;
 	private JTextField answerArea;
-	private String scoreStatus, timeStatus,question;
+	private String scoreStatus, timeStatus, question;
 	private int timeleft, thisScore;
 	private boolean result;
 	private static final int MAXTIME = 60;
-	private BufferedImage bg,answerButton;
+	private BufferedImage bg, answerButton;
+	private AudioClip bgm;
 
 	public PlayWindow(String mode) {
 		this.setLayout(null);
@@ -35,13 +39,14 @@ public class PlayWindow extends JPanel {
 		logic = new MiniGameLogic(mode);
 		question = logic.getEquation();
 		answer = GameManager.createButton(answerButton);
-		answer.setBounds((Setting.screenWidth-answerButton.getWidth())/2, 500, answerButton.getWidth(), answerButton.getHeight());
+		answer.setBounds((Setting.screenWidth - answerButton.getWidth()) / 2, 500, answerButton.getWidth(),
+				answerButton.getHeight());
 		this.add(answer);
 		thisScore = 0;
-		scoreStatus = "     Score : " + thisScore;	
+		scoreStatus = "     Score : " + thisScore;
 		timeleft = MAXTIME;
 		timeStatus = "Time Left : " + timeleft;
-		answerArea = new JTextField(){
+		answerArea = new JTextField() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -55,37 +60,41 @@ public class PlayWindow extends JPanel {
 		answerArea.setText("Answer here");
 		this.add(answerArea);
 		answerArea.addMouseListener(new MouseListener() {
-			
+
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void mousePressed(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void mouseExited(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				answerArea.setText("");
-				
+
 			}
 		});
+		if (Setting.isPlaySound) {
+			bgm = Resource.getAudio("sound/bgm3.wav");
+			bgm.play();
+		}
 	}
 
 	public void gameStart() {
@@ -100,6 +109,21 @@ public class PlayWindow extends JPanel {
 				if (timeleft == 0) {
 					((Timer) e.getSource()).stop();
 					Player.addScore(thisScore);
+					if (Setting.isPlaySound) {
+
+						bgm.stop();
+						synchronized (this) {
+							for (int i = 0; i < 3; i++) {
+								Resource.getAudio("sound/correct.wav").play();
+								try {
+									Thread.sleep(300);
+								} catch (InterruptedException e1) {
+									// TODO Auto-generated catch block
+									e1.printStackTrace();
+								}
+							}
+						}
+					}
 					GameManager.gameOver(thisScore);
 					return;
 				}
@@ -112,48 +136,46 @@ public class PlayWindow extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
-				try {
-					int sentAnswer = Integer.parseInt(answerArea.getText());
-					result = logic.checkAnswer(sentAnswer);
-				} catch (NumberFormatException ex) {
-					ex.printStackTrace();
-					JOptionPane.showMessageDialog(MainWindow.mainWindow, "Answer must be integer", "Error",
-							JOptionPane.ERROR_MESSAGE);
-					return;
-				}
-				if (result) {
-					thisScore += logic.rewardScore();
-					scoreStatus = "Score : " + thisScore;
-					synchronized (this) {
-						MainWindow.mainWindow.revalidate();
-						MainWindow.mainWindow.repaint();
-					}	
-				}
-				logic.resetParameter();
-				question = logic.getEquation();
-				answerArea.setText("Answer here");
-				synchronized (this) {
-					MainWindow.mainWindow.revalidate();
-					MainWindow.mainWindow.repaint();
-				}
-				
+				answer.setIcon(new ImageIcon(Resource.getBackgroundImage("img/Answer Button (pressed).png")));
+				runningQuestion();
 			}
 		});
+		answerArea.addKeyListener(new KeyListener() {
 
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					runningQuestion();
+				}
+
+			}
+		});
 	}
+
 	@Override
-	public void paintComponent(Graphics g){
+	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.drawImage(bg, 0, 0, null);
-		//draw banner
+		// draw banner
 		FontMetrics metrics = g.getFontMetrics(Setting.bigFont);
 		Rectangle2D rect = metrics.getStringBounds("Answer The Question", g);
 		int x = (Setting.screenWidth - (int) rect.getWidth()) / 2;
 		int y = 60;
 		g.setFont(Setting.bigFont);
-		g.drawString("Answer The Question", x,y );
-		//draw question
+		g.drawString("Answer The Question", x, y);
+		// draw question
 		metrics = g.getFontMetrics(Setting.slimBigFont);
 		rect = metrics.getStringBounds(question, g);
 		x = (Setting.screenWidth - (int) rect.getWidth()) / 2;
@@ -162,15 +184,50 @@ public class PlayWindow extends JPanel {
 		g.fillRect(312, 150, 400, 80);
 		g.setFont(Setting.slimBigFont);
 		g.setColor(Color.BLACK);
-		g.drawString(question, x,y );
-		//draw score bar
+		g.drawString(question, x, y);
+		// draw score bar
 		x = 20;
 		y = 740;
-		g.drawString(scoreStatus, x,y );
-		//draw time bar
+		g.drawString(scoreStatus, x, y);
+		// draw time bar
 		rect = metrics.getStringBounds(timeStatus, g);
 		x = (Setting.screenWidth - (int) rect.getWidth()) / 2;
 		y = 740;
-		g.drawString(timeStatus, x,y );
+		g.drawString(timeStatus, x, y);
+	}
+
+	public void runningQuestion() {
+		try {
+			int sentAnswer = Integer.parseInt(answerArea.getText());
+			result = logic.checkAnswer(sentAnswer);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			Resource.getAudio("sound/wrong.wav").play();
+			JOptionPane.showMessageDialog(MainWindow.mainWindow, "Answer must be integer", "Error",
+					JOptionPane.ERROR_MESSAGE);
+			answer.setIcon(new ImageIcon(answerButton));
+			return;
+		}
+		if (result) {
+			answer.setIcon(new ImageIcon(answerButton));
+			thisScore += logic.rewardScore();
+			scoreStatus = "Score : " + thisScore;
+			Resource.getAudio("sound/correct.wav").play();
+			synchronized (this) {
+				MainWindow.mainWindow.revalidate();
+				MainWindow.mainWindow.repaint();
+			}
+		} else {
+			Resource.getAudio("sound/wrong.wav").play();
+		}
+		answer.setIcon(new ImageIcon(answerButton));
+		logic.resetParameter();
+		question = logic.getEquation();
+		answerArea.setText("");
+		synchronized (this) {
+			MainWindow.mainWindow.revalidate();
+			MainWindow.mainWindow.repaint();
+		}
+
 	}
 }

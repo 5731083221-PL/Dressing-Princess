@@ -36,6 +36,16 @@ public class MainMap extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				if (Setting.isPlaySound) {
+					Resource.getAudio("sound/click.wav").play();
+				}
+				game.setIcon(new ImageIcon(Resource.getBackgroundImage("img/Play Button (pressed).png")));
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				GameManager.runMiniGame();
 
 			}
@@ -44,6 +54,16 @@ public class MainMap extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				if (Setting.isPlaySound) {
+					Resource.getAudio("sound/click.wav").play();
+				}
+				shop.setIcon(new ImageIcon(Resource.getBackgroundImage("img/Shop Button (pressed).png")));
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				GameManager.gotoShop();
 
 			}
