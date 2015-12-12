@@ -33,23 +33,21 @@ public class Prologue extends JPanel {
 	}
 
 	public void playPrologue() {
-		synchronized (this) {
-			Timer t = new Timer(2500, new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					if (i < 4)
-						pageRun.setIcon(new ImageIcon(page[i]));
-					i++;
-					if (i == 5) {
-						((Timer) e.getSource()).stop();
+		Timer t = new Timer(2500, new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (i < 4)
+					pageRun.setIcon(new ImageIcon(page[i]));
+				i++;
+				if (i == 5) {
+					((Timer) e.getSource()).stop();
 
-						GameManager.runGame();
-					}
-
+					GameManager.runGame();
 				}
-			});
-			t.start();
-		}
+			}
+		});
+		t.start();
+		
 	}
 
 }

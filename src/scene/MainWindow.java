@@ -7,7 +7,7 @@ import manager.Resource;
 public class MainWindow{
 	public static JPanel showObject = new JPanel();
 	public static JFrame mainWindow;
-	public static void main(String args[]){
+	public static void main(String[] args){
 		mainWindow = new JFrame("Dressing Princess");
 		mainWindow.setIconImage(Resource.getBackgroundImage("img/logo.png"));
 		GameTitle gameTitle = new GameTitle();

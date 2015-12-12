@@ -8,14 +8,14 @@ public class Player {
 		return score;
 	}
 
-	public static void addScore(int score) {
-		Player.score += score;
+	public static void addScore(int add) {
+		score += add;
 	}
 	
 	public static String getPlayerName(){
 		return name;
 	}
-	public static void setPlayerName(String name){
-		Player.name = name;
+	public static void setPlayerName(String playerName){
+		name = playerName;
 	}
 }

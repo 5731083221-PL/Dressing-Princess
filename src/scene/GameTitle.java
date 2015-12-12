@@ -84,7 +84,8 @@ public class GameTitle extends JPanel {
 						bgm.stop();
 						Resource.getAudio("sound/click.wav").play();
 					}
-					Player.setPlayerName(playerName.getText());
+					String in = playerName.getText();
+					Player.setPlayerName(in);
 					try {
 						Thread.sleep(1000);
 					} catch (InterruptedException e1) {
