@@ -5,10 +5,10 @@ public class RandomUtility {
 		return 1 + (int)(Math.random() * ((10 - 1) + 1));
 	}
 	public static int MediumRandom(){
-		return 1 + (int)(Math.random() * ((100 - 1) + 1));
+		return 1 + (int)(Math.random() * ((100 - 10) + 1));
 	}
 	public static int HardRandom(){
-		return 1 + (int)(Math.random() * ((1000 - 1) + 1));
+		return 1 + (int)(Math.random() * ((1000 - 100) + 1));
 	}
 	public static String OpRandom(){
 		int a = 1 + (int)(Math.random() * ((2 - 1) + 1));

@@ -22,10 +22,10 @@ import player.Player;
 public class PlayWindow extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private MiniGameLogic logic;
-	private JButton answer;
-	private JTextField answerArea;
-	private String scoreStatus, timeStatus, question;
-	private int timeleft, thisScore;
+	private volatile JButton answer;
+	private volatile JTextField answerArea;
+	private volatile String scoreStatus, timeStatus, question;
+	private volatile int timeleft, thisScore;
 	private boolean result;
 	private static final int MAXTIME = 60;
 	private BufferedImage bg, answerButton;
@@ -43,7 +43,7 @@ public class PlayWindow extends JPanel {
 				answerButton.getHeight());
 		this.add(answer);
 		thisScore = 0;
-		scoreStatus = "     Score : " + thisScore;
+		scoreStatus = "Score : " + thisScore;
 		timeleft = MAXTIME;
 		timeStatus = "Time Left : " + timeleft;
 		answerArea = new JTextField() {
@@ -106,7 +106,7 @@ public class PlayWindow extends JPanel {
 				timeStatus = "Time Left : " + timeleft;
 				MainWindow.mainWindow.revalidate();
 				MainWindow.mainWindow.repaint();
-				if (timeleft == 0) {
+				if (timeleft == -1) {
 					((Timer) e.getSource()).stop();
 					Player.addScore(thisScore);
 					if (Setting.isPlaySound) {
@@ -130,7 +130,6 @@ public class PlayWindow extends JPanel {
 			}
 		});
 		t1.start();
-		question = logic.getEquation();
 		answer.requestFocus();
 		answer.addActionListener(new ActionListener() {
 
@@ -202,7 +201,9 @@ public class PlayWindow extends JPanel {
 			result = logic.checkAnswer(sentAnswer);
 		} catch (NumberFormatException ex) {
 			ex.printStackTrace();
-			Resource.getAudio("sound/wrong.wav").play();
+			if (Setting.isPlaySound) {
+				Resource.getAudio("sound/wrong.wav").play();
+			}
 			JOptionPane.showMessageDialog(MainWindow.mainWindow, "Answer must be integer", "Error",
 					JOptionPane.ERROR_MESSAGE);
 			answer.setIcon(new ImageIcon(answerButton));
@@ -212,13 +213,17 @@ public class PlayWindow extends JPanel {
 			answer.setIcon(new ImageIcon(answerButton));
 			thisScore += logic.rewardScore();
 			scoreStatus = "Score : " + thisScore;
-			Resource.getAudio("sound/correct.wav").play();
+			if (Setting.isPlaySound) {
+				Resource.getAudio("sound/correct.wav").play();
+			}
 			synchronized (this) {
 				MainWindow.mainWindow.revalidate();
 				MainWindow.mainWindow.repaint();
 			}
 		} else {
-			Resource.getAudio("sound/wrong.wav").play();
+			if (Setting.isPlaySound) {
+				Resource.getAudio("sound/wrong.wav").play();
+			}
 		}
 		answer.setIcon(new ImageIcon(answerButton));
 		logic.resetParameter();

@@ -13,7 +13,17 @@ public class Resource {
 	private static BufferedImage bg;
 	private static AudioClip sound;
 	private static AudioClip mainBGM;
-	private static ClassLoader cl = Resource.class.getClassLoader();
+	private static ClassLoader cl;
+	static{
+		cl = Resource.class.getClassLoader();
+		try {
+			mainBGM = Applet.newAudioClip(cl.getResource("sound/bgm1.wav").toURI().toURL());
+		} catch (MalformedURLException | URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			mainBGM = null;
+		}
+	}
 	public static BufferedImage getBackgroundImage(String directory){
 		try{
 			bg = ImageIO.read(cl.getResource(directory));
@@ -35,14 +45,7 @@ public class Resource {
 	}
 	
 	public static void playMainBGM(){
-		try {
-			mainBGM = Applet.newAudioClip(cl.getResource("sound/bgm1.wav").toURI().toURL());
-		} catch (MalformedURLException | URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			mainBGM = null;
-		}
-		mainBGM.play();
+		mainBGM.loop();
 	}
 	public static void stopMainBGM(){
 		mainBGM.stop();

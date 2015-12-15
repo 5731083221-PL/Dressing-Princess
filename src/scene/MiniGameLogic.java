@@ -164,11 +164,11 @@ public class MiniGameLogic {
 
 	public int rewardScore() {
 		if (mode.equalsIgnoreCase("Hard")) {
-			return 80;
-		} else if (mode.equalsIgnoreCase("medium")) {
 			return 40;
+		} else if (mode.equalsIgnoreCase("medium")) {
+			return 20;
 		} else {
-			return 10;
+			return 5;
 		}
 	}
 }
