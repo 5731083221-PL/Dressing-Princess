@@ -26,7 +26,7 @@ public class MainWindow{
 		});
 		
 	}
-	public static void repaintFrame(JPanel newFrame){
+	public static void repaintFrame(final JPanel newFrame){
 		SwingUtilities.invokeLater(new Runnable() {
 			
 			@Override
