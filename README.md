@@ -5,7 +5,7 @@ Description
 Instruction
 1. Do not folk this project before permission.
 2. If you have committed your code tell me privately.
-3. This project is used for test only. All copyright is reserved to 5731083221-PL and Sasicha only. Do not copy or edit this project before permission.
+3. This project is used for test only. All copyright is reserved to peerawutgaga and Sasicha only. Do not copy or edit this project before permission.
 
 Developer
 1. Peerawut Luengruengroj
